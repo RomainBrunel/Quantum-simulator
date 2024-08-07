@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 class quantum_state():
     def __init__(self) -> None:
-        self.state = None
+        self.input_state = None
         self.output_state = None
         
     def generate_rdm_state(self):
@@ -15,10 +15,17 @@ class quantum_state():
         state = np.array(c0,c1)/np.sqrt(c0**2+c1**2)
         self.state = state
 
-    def plot_state(self):
+    def plot_state(self, in_out:bool = False):
+        """ True for output state
+            False for input state"""
+        if in_out:
+            s = self.output_state
+        else:
+            s = self.input_state
+
         plt.figure("Quantum state")
         fig, ax = plt.subplots()
-        ax.quiver(0, 0, self.state[0], self.state[1], angles='xy', scale_units='xy', scale=1)
+        ax.quiver(0, 0, s[0], s[1], angles='xy', scale_units='xy', scale=1)
         ax.set_xlim(-1.1, 1.1)
         ax.set_ylim(-1.1, 1.1)
         ax.axhline(0, color='grey', lw=0.5)
