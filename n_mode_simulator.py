@@ -88,10 +88,10 @@ class one_qubit_gate():
     def Rx(self,theta):
         return np.array([[np.cos(theta/2),-1j*np.sin(theta/2)],[-1j*np.sin(theta/2),np.cos(theta/2)]])
     
-    def Rz(self,theta):
-        return np.array([[np.cos(theta/2),-1*np.sin(theta/2)],[-1*np.sin(theta/2),np.cos(theta/2)]])
-    
     def Ry(self,theta):
+        return np.array([[np.cos(theta/2),-1*np.sin(theta/2)],[1*np.sin(theta/2),np.cos(theta/2)]])
+    
+    def Rz(self,theta):
         return np.array([[np.exp(-1j*theta/2),0],[0,np.exp(1j*theta/2)]])
     
 class quantum_simulator():
@@ -286,6 +286,12 @@ class quantum_simulator():
                 state.output_state = gate_set[gate](arg) @ state.output_state
         return state.output_state
 
+    def clear_circuit(self):
+        self.circuit = []
+        self.circuit_args = []
+        self.theta =[]
+    
+        
 
 if __name__ == "__main__":
     state = quantum_state(3, np.array([1,0,0,0,0,0,0,0]))
