@@ -111,11 +111,11 @@ class quantum_simulator():
                 unitary = np.kron(unitary,self.one_qgate.I()) 
         return unitary
     
-    def S(self, modes:list, theta, *args):
+    def S(self, modes:list, *args):
         unitary = 1
         for i in range(self.dimension):
             if i in modes:
-                unitary = np.kron(unitary,self.one_qgate.S(theta))
+                unitary = np.kron(unitary,self.one_qgate.S())
             else:
                 unitary = np.kron(unitary,self.one_qgate.I()) 
         return unitary
@@ -153,9 +153,11 @@ class quantum_simulator():
             -modes : list of modes to apply the gates
             -theta : list of angles to apply to the modes"""
         unitary = 1
+        j=0
         for i in range(self.dimension):
             if i in modes:
-                unitary = np.kron(unitary,self.one_qgate.Rx(theta[i]))
+                unitary = np.kron(unitary,self.one_qgate.Rx(theta[j]))
+                j+=1
             else:
                 unitary = np.kron(unitary,self.one_qgate.I()) 
         return unitary
@@ -166,9 +168,11 @@ class quantum_simulator():
             -modes : list of modes to apply the gates
             -theta : list of angles to apply to the modes"""
         unitary = 1
+        j=0
         for i in range(self.dimension):
             if i in modes:
-                unitary = np.kron(unitary,self.one_qgate.Ry(theta[i]))
+                unitary = np.kron(unitary,self.one_qgate.Ry(theta[j]))
+                j+=1
             else:
                 unitary = np.kron(unitary,self.one_qgate.I()) 
         return unitary
@@ -179,9 +183,11 @@ class quantum_simulator():
             -modes : list of modes to apply the gates
             -theta : list of angles to apply to the modes"""
         unitary = 1
+        j=0
         for i in range(self.dimension):
             if i in modes:
-                unitary = np.kron(unitary,self.one_qgate.Rz(theta[i]))
+                unitary = np.kron(unitary,self.one_qgate.Rz(theta[j]))
+                j+=1
             else:
                 unitary = np.kron(unitary,self.one_qgate.I()) 
         return unitary
@@ -251,14 +257,14 @@ class quantum_simulator():
         MUST BE ORDERED IN INCREASING ORDER"""
         self.circuit.append("Rx")
         self.theta.append(theta)
-        self.circuit_args.append((theta,args))
+        self.circuit_args.append(args)
 
     def add_Ry_gate(self, theta,*args):
         """theta must be a list of angles to apply to the modes
         MUST BE ORDERED IN INCREASING ORDER"""
         self.circuit.append("Ry")
         self.theta.append(theta)
-        self.circuit_args.append((theta,args))
+        self.circuit_args.append(args)
 
     def add_Rz_gate(self, theta,*args):
         """theta must be a list of angles to apply to the modes
@@ -294,9 +300,9 @@ class quantum_simulator():
         
 
 if __name__ == "__main__":
-    state = quantum_state(3, np.array([1,0,0,0,0,0,0,0]))
+    state = quantum_state(15)
     print(state.input_state)
-    sim = quantum_simulator(3)
+    sim = quantum_simulator(15)
     # a = sim.H([0]) @ sim.Cnot([(0,2)]) @ np.array([1,0,0,0,0,0,0,0])
     sim.add_Rz_gate([np.pi/4],0)
     sim.add_Cnot_gate([(0,1)])
